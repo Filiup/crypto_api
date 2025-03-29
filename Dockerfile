@@ -2,6 +2,8 @@ FROM python:3.13.2-alpine
 
 WORKDIR /crypto
 
+ENV PATH="/home/python/.local/bin:$PATH"
+
 RUN apk add --no-cache \
     gcc \
     musl-dev \
