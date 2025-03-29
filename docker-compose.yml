@@ -1,0 +1,47 @@
+services:
+  crypto-pg:
+    container_name: crypto-pg
+    image: postgres:17-bullseye
+    ports:
+      - 5430:${PG_PORT}
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: crypto
+    env_file:
+      - .env
+    healthcheck:
+      test: pg_isready || exit 1
+      interval: 10s
+      timeout: 30s
+      start_period: 120s
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  crypto-api:
+    container_name: crypto-api
+    build:
+      context: .
+    depends_on:
+      crypto-pg:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    ports:
+      - ${CRYPTO_API_PORT}:${CRYPTO_API_PORT}
+    env_file:
+      - .env
+    environment:
+      - FLASK_RUN_PORT=${CRYPTO_API_PORT}
+      - FLASK_APP=app
+    volumes:
+      - .:/home/python/crypto-api
+    working_dir: /home/python/crypto-api
+    command:
+      - sh
+      - -c
+      - |
+        python -m flask run --host=0.0.0.0 --port=${CRYPTO_API_PORT} --reload
+
+volumes:
+  pg_data:

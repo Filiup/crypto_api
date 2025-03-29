@@ -1,2 +1,5 @@
-dependency-injector
-flask
+dependency-injector==4.46.0
+SQLAlchemy==2.0
+flask===3.1.0
+watchdog==6.0.0
+python-dotenv==1.0.0
