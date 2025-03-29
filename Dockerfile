@@ -2,6 +2,14 @@ FROM python:3.13.2-alpine
 
 WORKDIR /crypto
 
+RUN apk add --no-cache \
+    gcc \
+    musl-dev \
+    postgresql-dev \
+    libpq \
+    libffi-dev \
+    build-base
+
 RUN adduser -u 1000 -D python
 USER python
 

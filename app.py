@@ -1,8 +1,10 @@
-from operator import index
 from flask import Flask
 from app_container import AppContainer
+from dotenv import load_dotenv
 
 from crypto.crypto_controller import *
+
+load_dotenv()
 
 def create_app() -> Flask:
     app_container = AppContainer()
