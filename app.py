@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 
 from crypto.crypto_view import *
 
-load_dotenv()
-
+load_dotenv(".env")
+load_dotenv(".env.secret", override=True)
 
 def create_app() -> OpenAPI:
     app_container = AppContainer()

@@ -1,4 +1,3 @@
-import json
 from dependency_injector.wiring import Provide, inject
 from flask import make_response
 from flask_openapi3 import APIView, Tag
