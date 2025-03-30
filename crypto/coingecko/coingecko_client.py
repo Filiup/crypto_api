@@ -2,9 +2,9 @@ from .types import CoingeckoCoin, CoingeckoCoinData
 import requests
 
 class CoinGeckoClient:
-    def __init__(self, api_key: str, baseUrl: str):
+    def __init__(self, api_key: str, base_url: str):
         self.api_key = api_key
-        self.base_url = baseUrl
+        self.base_url = base_url
 
     def get_all_coins(self) -> list[CoingeckoCoin]:
         url = f"{self.base_url}/coins/list"
