@@ -24,11 +24,11 @@ class CryptoService:
     def getAllCurrencies(self):
         return self.repository.get_many()
     
-    def getCryptoCurrency(self, id: int):
+    def getCurrency(self, id: int):
         crypto_currency = self.repository.get_one(id)
         return crypto_currency
     
-    def deleteCryptoCurrency(self, model: CryptoCurrencyModel):
+    def deleteCurrency(self, model: CryptoCurrencyModel):
         deleted_currency = self.repository.delete_one(model)
         return deleted_currency
 
