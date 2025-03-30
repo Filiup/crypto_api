@@ -6,6 +6,7 @@ from app_container import AppContainer
 from crypto.crypto_service import CryptoService
 from crypto.dto.create_crypto import CreateCryptoDto
 from crypto.dto.crypto_response import CryptoResponseDto
+from crypto.dto.crypto_response_list import CryptoResponseListDto
 
 
 crypto_view = APIView(
@@ -19,9 +20,15 @@ class CryptoListApiView:
     def __init__(self, crypto_service: CryptoService = Provide[AppContainer.crypto.crypto_service]):
         self.crypto_service = crypto_service
 
-    @crypto_view.doc(summary="Get all crypto currencies")
+    @crypto_view.doc(summary="Get all crypto currencies", responses={
+        200: CryptoResponseListDto
+    })
     def get(self):
-        return self.crypto_service.test()
+        crypto_currencies = self.crypto_service.getAllCurrencies()
+        response_dto = CryptoResponseDto.from_model_list(crypto_currencies)
+        response_list_dto = CryptoResponseListDto(root=response_dto)
+
+        return make_response(response_list_dto.model_dump(), 200)
     
     @crypto_view.doc(summary="Create new crypto currency", responses={
         200: CryptoResponseDto
