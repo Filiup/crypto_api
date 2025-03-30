@@ -5,9 +5,11 @@ class Repository(ABC):
     def __init__(self, session: Session):
         self.session = session
 
-    @abstractmethod
-    def create(self, obj):
-        pass
+    def create(self, model):
+        self.session.add(model)
+        self.session.commit()
+
+        return model
 
     @abstractmethod
     def read(self, model, obj_id):
