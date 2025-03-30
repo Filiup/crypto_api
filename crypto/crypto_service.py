@@ -2,7 +2,6 @@ from crypto.coingecko.coingecko_client import CoinGeckoClient
 from crypto.crypto_repository import CryptoRepository
 from crypto.dto.create_crypto import CreateCryptoDto
 from crypto.expecptions.coingecko import CoingeckoException
-from crypto.expecptions.crypto_not_found import CryptoNotFoundExpection
 from crypto.models.cryto_currency_model import CryptoCurrencyModel
 
 class CryptoService:
@@ -25,14 +24,11 @@ class CryptoService:
     
     def getCryptoCurrency(self, id: int):
         crypto_currency = self.repository.get_one(id)
-        if crypto_currency is None:
-            raise CryptoNotFoundExpection(f"Coin with id {id} was not found")
-        
         return crypto_currency
     
-    def deleteCryptoCurrency(self, id: int):
-        crypto_currency = self.getCryptoCurrency(id)
-        return self.repository.delete_one(crypto_currency)
+    def deleteCryptoCurrency(self, model: CryptoCurrencyModel):
+        deleted_currency = self.repository.delete_one(deleted_currency)
+        return deleted_currency
 
 
     def createCurrency(self, dto: CreateCryptoDto):

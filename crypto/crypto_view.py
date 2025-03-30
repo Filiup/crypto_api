@@ -8,6 +8,7 @@ from crypto.dto.create_crypto import CreateCryptoDto
 from crypto.dto.crypto_path import CryptoPathDto
 from crypto.dto.crypto_response import CryptoResponseDto
 from crypto.dto.crypto_response_list import CryptoResponseListDto
+from werkzeug.exceptions import NotFound
 
 
 crypto_view = APIView(
@@ -54,10 +55,12 @@ class CryptoApiView:
         400: ErrorResponseDto
     })
     def get(self, path: CryptoPathDto):
-         crypto_currency = self.crypto_service.getCryptoCurrency(path.id)
-         response_dto = CryptoResponseDto.from_model(crypto_currency)
+        crypto_currency = self.crypto_service.getCryptoCurrency(path.id)
+        if crypto_currency is None:
+            raise NotFound(f"Coin with id {path.id} was not found")
 
-         return make_response(response_dto.model_dump(), 200)
+        response_dto = CryptoResponseDto.from_model(crypto_currency)
+        return make_response(response_dto.model_dump(), 200)
     
 
     @crypto_view.doc(summary="Delete crypto currency by id", responses={
@@ -65,7 +68,11 @@ class CryptoApiView:
         400: ErrorResponseDto
     })
     def delete(self, path: CryptoPathDto):
-        deleted_currency = self.crypto_service.deleteCryptoCurrency(path.id)
+        crypto_currency = self.crypto_service.getCryptoCurrency(path.id)
+        if crypto_currency is None:
+            raise NotFound(f"Coin with id {path.id} was not found")
+
+        deleted_currency = self.crypto_service.deleteCryptoCurrency(crypto_currency)
         response_dto = CryptoResponseDto.from_model(deleted_currency)
 
         return make_response(response_dto.model_dump(), 200)
