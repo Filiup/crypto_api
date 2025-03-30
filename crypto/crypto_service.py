@@ -1,6 +1,7 @@
 from crypto.coingecko.coingecko_client import CoinGeckoClient
 from crypto.crypto_repository import CryptoRepository
 from crypto.dto.create_crypto import CreateCryptoDto
+from crypto.expecptions.crypto_not_found import CryptoNotFoundExpection
 from crypto.models.cryto_currency_model import CryptoCurrencyModel
 from werkzeug.exceptions import BadRequest
 
@@ -26,7 +27,7 @@ class CryptoService:
     def createCurrency(self, dto: CreateCryptoDto):
         coingecko_id = self._find_coingecko_id(dto.name, dto.symbol)
         if coingecko_id is None:
-            raise BadRequest(f"Coin with name {dto.name} and symbol {dto.symbol} does not exist")
+            raise CryptoNotFoundExpection(f"Coin with name {dto.name} and symbol {dto.symbol} does not exist")
 
         coin_data = self.coingecko_client.get_coin_by_id(coingecko_id)
 

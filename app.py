@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from flask import json, jsonify
 import logging
 
+from common.exceptions.service_exception import ServiceException
 from crypto.crypto_view import *
 from werkzeug.exceptions import HTTPException
 
@@ -25,17 +26,18 @@ def handle_http_error(error: HTTPException):
     return response
 
 
-def handle_error(error: Exception):
-    logging.error(f"Unexpected error: {str(error)}")
+
+def handle_service_error(error: ServiceException):
+    logging.error(f"Service error: {str(error)}")
 
     error_dto = ErrorResponseDto(
-        status=500,
-        message="Internal Server Error",
-        description=str(error)
+        status=error.status_code,
+        message=error.message,
+        description=error.details
     )
 
-
-    return jsonify(error_dto.model_dump), 500
+    return jsonify(error_dto.model_dump()), error.status_code
+    
 
 def create_app() -> OpenAPI:
     app_container = AppContainer()
@@ -45,5 +47,6 @@ def create_app() -> OpenAPI:
     app = OpenAPI(__name__, info=info)
     app.register_api_view(crypto_view)
     app.errorhandler(HTTPException)(handle_http_error)
+    app.errorhandler(ServiceException)(handle_service_error)
 
     return app
