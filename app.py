@@ -1,7 +1,8 @@
 from flask_openapi3 import OpenAPI, Info
 from app_container import AppContainer
 from dotenv import load_dotenv
-from flask import json
+from flask import json, jsonify
+import logging
 
 from crypto.crypto_view import *
 from werkzeug.exceptions import HTTPException
@@ -23,6 +24,18 @@ def handle_http_error(error: HTTPException):
     response.content_type = "application/json"
     return response
 
+
+def handle_error(error: Exception):
+    logging.error(f"Unexpected error: {str(error)}")
+
+    error_dto = ErrorResponseDto(
+        status=500,
+        message="Internal Server Error",
+        description=str(error)
+    )
+
+
+    return jsonify(error_dto.model_dump), 500
 
 def create_app() -> OpenAPI:
     app_container = AppContainer()
