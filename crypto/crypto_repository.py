@@ -1,3 +1,5 @@
+from sqlalchemy.exc import IntegrityError
+from crypto.expecptions.database import DatabaseException
 from crypto.models.cryto_currency_model import CryptoCurrencyModel
 from sqlalchemy.orm import Session
 
@@ -6,8 +8,12 @@ class CryptoRepository:
         self.session = session
 
     def create(self, model):
-        self.session.add(model)
-        self.session.commit()
+        try:
+            self.session.add(model)
+            self.session.commit()
+        except IntegrityError:
+            self.session.rollback()
+            raise DatabaseException("Crypto currency already exists.")
 
         return model
     
