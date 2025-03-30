@@ -1,8 +1,8 @@
 """Add crypto table
 
-Revision ID: cd59b9cbc003
+Revision ID: fa44df4ee2d4
 Revises: 
-Create Date: 2025-03-30 21:13:34.099728
+Create Date: 2025-03-30 23:01:10.534244
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = 'cd59b9cbc003'
+revision: str = 'fa44df4ee2d4'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,8 +25,8 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('coingecko_id', sa.String(), nullable=False),
     sa.Column('categories', postgresql.ARRAY(sa.String()), server_default='{}', nullable=False),
-    sa.Column('current_price', sa.Integer(), nullable=True),
-    sa.Column('market_cap', sa.Integer(), nullable=True),
+    sa.Column('current_price', sa.BigInteger(), nullable=True),
+    sa.Column('market_cap', sa.BigInteger(), nullable=True),
     sa.Column('total_supply', sa.Float(), nullable=True),
     sa.Column('last_updated', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('image_url', sa.String(), nullable=True),
