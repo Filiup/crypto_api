@@ -46,18 +46,29 @@ class CryptoListApiView:
 @crypto_view.route("/<int:id>")
 class CryptoApiView:
     @inject
+    def __init__(self, crypto_service: CryptoService = Provide[AppContainer.crypto.crypto_service]):
+        self.crypto_service = crypto_service
+
     @crypto_view.doc(summary="Get crypto currency by id", responses={
         200: CryptoResponseDto,
         400: ErrorResponseDto
     })
-    def __init__(self, crypto_service: CryptoService = Provide[AppContainer.crypto.crypto_service]):
-        self.crypto_service = crypto_service
-
     def get(self, path: CryptoPathDto):
          crypto_currency = self.crypto_service.getCryptoCurrency(path.id)
          response_dto = CryptoResponseDto.from_model(crypto_currency)
 
          return make_response(response_dto.model_dump(), 200)
+    
+
+    @crypto_view.doc(summary="Delete crypto currency by id", responses={
+        200: CryptoResponseDto,
+        400: ErrorResponseDto
+    })
+    def delete(self, path: CryptoPathDto):
+        deleted_currency = self.crypto_service.deleteCryptoCurrency(path.id)
+        response_dto = CryptoResponseDto.from_model(deleted_currency)
+
+        return make_response(response_dto.model_dump(), 200)
 
 
       

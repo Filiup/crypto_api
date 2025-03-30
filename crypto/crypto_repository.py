@@ -24,6 +24,10 @@ class CryptoRepository:
     def get_one(self, id: int):
         return self.session.query(CryptoCurrencyModel).where(CryptoCurrencyModel.id == id).first()
     
+    def delete_one(self, model: CryptoCurrencyModel):
+        self.session.delete(model)
+        self.session.commit()
 
+        return model
 
 

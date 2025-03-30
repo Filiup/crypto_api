@@ -29,8 +29,12 @@ class CryptoService:
             raise CryptoNotFoundExpection(f"Coin with id {id} was not found")
         
         return crypto_currency
-
     
+    def deleteCryptoCurrency(self, id: int):
+        crypto_currency = self.getCryptoCurrency(id)
+        return self.repository.delete_one(crypto_currency)
+
+
     def createCurrency(self, dto: CreateCryptoDto):
         coingecko_id = self._find_coingecko_id(dto.name, dto.symbol)
         if coingecko_id is None:
