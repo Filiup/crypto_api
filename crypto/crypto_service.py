@@ -69,8 +69,8 @@ class CryptoService:
         model.total_supply=coin_data.total_supply,
         model.last_updated=datetime.fromisoformat(coin_data.last_updated.replace("Z", "+00:00")),
         model.image_url=coin_data.image_url,
-        model.hashing_algorithm = coin_data["hashing_algorithm"]
-        model.categories = coin_data["categories"]
+        model.hashing_algorithm = coin_data.hashing_algorithm
+        model.categories = coin_data.categories
         model.coingecko_id = coingecko_id
         
         self.repository.session.commit()
