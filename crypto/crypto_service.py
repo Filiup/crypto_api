@@ -1,6 +1,7 @@
 from crypto.coingecko.coingecko_client import CoinGeckoClient
 from crypto.crypto_repository import CryptoRepository
 from crypto.dto.create_crypto import CreateCryptoDto
+from crypto.dto.put_crypto import PutCryptoDto
 from crypto.expecptions.coingecko import CoingeckoException
 from crypto.models.cryto_currency_model import CryptoCurrencyModel
 
@@ -27,7 +28,7 @@ class CryptoService:
         return crypto_currency
     
     def deleteCryptoCurrency(self, model: CryptoCurrencyModel):
-        deleted_currency = self.repository.delete_one(deleted_currency)
+        deleted_currency = self.repository.delete_one(model)
         return deleted_currency
 
 
@@ -47,6 +48,25 @@ class CryptoService:
         )
 
         return self.repository.create(crypto_currency_model)
+    
+    def updateCurrency(self, model: CryptoCurrencyModel, dto: PutCryptoDto):
+        coingecko_id = self._find_coingecko_id(dto.name, dto.symbol)
+        if coingecko_id is None:
+            raise CoingeckoException(f"Coin with name {dto.name} and symbol {dto.symbol} does not exist")
+        
+        coin_data = self.coingecko_client.get_coin_by_id(coingecko_id)
+
+        model.name = dto.name
+        model.symbol = dto.symbol
+        model.hashing_algorithm = coin_data["hashing_algorithm"]
+        model.categories = coin_data["categories"]
+        model.coingecko_id = coingecko_id
+        
+        self.repository.session.commit()
+
+        return model
+
+
     
 
 
