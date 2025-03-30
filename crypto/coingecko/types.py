@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-from email.mime import image
-from typing import Self, TypedDict
+from typing import TypedDict
 
 
 class CoinMarketData(TypedDict):

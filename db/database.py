@@ -1,4 +1,3 @@
-from xxlimited import Str
 import sqlalchemy as sa
 from sqlalchemy.orm import sessionmaker, declarative_base
 
