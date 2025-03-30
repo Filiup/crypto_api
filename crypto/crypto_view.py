@@ -5,6 +5,7 @@ from app_container import AppContainer
 from common.dto.error_response import ErrorResponseDto
 from crypto.crypto_service import CryptoService
 from crypto.dto.create_crypto import CreateCryptoDto
+from crypto.dto.crypto_path import CryptoPathDto
 from crypto.dto.crypto_response import CryptoResponseDto
 from crypto.dto.crypto_response_list import CryptoResponseListDto
 
@@ -21,7 +22,8 @@ class CryptoListApiView:
         self.crypto_service = crypto_service
 
     @crypto_view.doc(summary="Get all crypto currencies", responses={
-        200: CryptoResponseListDto
+        200: CryptoResponseListDto,
+        400: ErrorResponseDto
     })
     def get(self):
         crypto_currencies = self.crypto_service.getAllCurrencies()
@@ -39,6 +41,25 @@ class CryptoListApiView:
         response_dto = CryptoResponseDto.from_model(crypto_currency)
 
         return make_response(response_dto.model_dump(), 200)
+    
+
+@crypto_view.route("/<int:id>")
+class CryptoApiView:
+    @inject
+    @crypto_view.doc(summary="Get crypto currency by id", responses={
+        200: CryptoResponseDto,
+        400: ErrorResponseDto
+    })
+    def __init__(self, crypto_service: CryptoService = Provide[AppContainer.crypto.crypto_service]):
+        self.crypto_service = crypto_service
+
+    def get(self, path: CryptoPathDto):
+         crypto_currency = self.crypto_service.getCryptoCurrency(path.id)
+         response_dto = CryptoResponseDto.from_model(crypto_currency)
+
+         return make_response(response_dto.model_dump(), 200)
+
+
       
 
 

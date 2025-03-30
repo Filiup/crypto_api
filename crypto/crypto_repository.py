@@ -1,6 +1,7 @@
 from sqlalchemy.exc import IntegrityError
 from crypto.expecptions.database import DatabaseException
 from crypto.models.cryto_currency_model import CryptoCurrencyModel
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 class CryptoRepository:
@@ -19,6 +20,9 @@ class CryptoRepository:
     
     def get_many(self):
         return self.session.query(CryptoCurrencyModel).all()
+    
+    def get_one(self, id: int):
+        return self.session.query(CryptoCurrencyModel).where(CryptoCurrencyModel.id == id).first()
     
 
 
