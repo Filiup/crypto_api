@@ -1,4 +1,4 @@
-from .types import CoingeckoCoin, CoingeckoCoinData
+from .types import CoinDataResponse, CoingeckoCoin, CoingeckoCoinData
 import requests
 
 class CoinGeckoClient:
@@ -15,7 +15,7 @@ class CoinGeckoClient:
         response = requests.get(url, headers=headers)
         return response.json()
 
-    def get_coin_by_id(self, coin_id: str) -> CoingeckoCoinData:
+    def get_coin_by_id(self, coin_id: str) -> CoinDataResponse:
         url = f"{self.base_url}/coins/{coin_id}"
         headers = {
             "accept": "application/json",
@@ -23,5 +23,7 @@ class CoinGeckoClient:
         }
 
         response = requests.get(url, headers=headers)
-        return response.json()
+        json: CoingeckoCoinData = response.json()
+
+        return CoinDataResponse.from_dict(json)
 

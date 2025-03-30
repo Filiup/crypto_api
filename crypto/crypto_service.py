@@ -1,3 +1,4 @@
+from datetime import datetime
 from crypto.coingecko.coingecko_client import CoinGeckoClient
 from crypto.crypto_repository import CryptoRepository
 from crypto.dto.create_crypto import CreateCryptoDto
@@ -42,8 +43,13 @@ class CryptoService:
         crypto_currency_model = CryptoCurrencyModel(
             name=dto.name,
             symbol=dto.symbol,
-            hashing_algorithm=coin_data["hashing_algorithm"],
-            categories=coin_data["categories"],
+            hashing_algorithm=coin_data.hashing_algorithm,
+            categories=coin_data.categories,
+            current_price=coin_data.current_price,
+            market_cap=coin_data.market_cap,
+            total_supply=coin_data.total_supply,
+            last_updated=datetime.fromisoformat(coin_data.last_updated.replace("Z", "+00:00")),
+            image_url=coin_data.image_url,
             coingecko_id=coingecko_id
         )
 
@@ -58,6 +64,11 @@ class CryptoService:
 
         model.name = dto.name
         model.symbol = dto.symbol
+        model.current_price=coin_data.current_price,
+        model.market_cap=coin_data.market_cap,
+        model.total_supply=coin_data.total_supply,
+        model.last_updated=datetime.fromisoformat(coin_data.last_updated.replace("Z", "+00:00")),
+        model.image_url=coin_data.image_url,
         model.hashing_algorithm = coin_data["hashing_algorithm"]
         model.categories = coin_data["categories"]
         model.coingecko_id = coingecko_id
