@@ -1,8 +1,8 @@
 """Add crypto table
 
-Revision ID: 28db9b2f966e
+Revision ID: cd59b9cbc003
 Revises: 
-Create Date: 2025-03-30 16:02:38.954824
+Create Date: 2025-03-30 21:13:34.099728
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '28db9b2f966e'
+revision: str = 'cd59b9cbc003'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,6 +25,11 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('coingecko_id', sa.String(), nullable=False),
     sa.Column('categories', postgresql.ARRAY(sa.String()), server_default='{}', nullable=False),
+    sa.Column('current_price', sa.Integer(), nullable=True),
+    sa.Column('market_cap', sa.Integer(), nullable=True),
+    sa.Column('total_supply', sa.Float(), nullable=True),
+    sa.Column('last_updated', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('image_url', sa.String(), nullable=True),
     sa.Column('symbol', sa.String(), nullable=False),
     sa.Column('hashing_algorithm', sa.String(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
