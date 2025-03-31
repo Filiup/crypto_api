@@ -3,10 +3,7 @@ from crypto.crypto_repository import CryptoRepository
 from crypto.crypto_service import CryptoService
 from db.database import Database
 from celery import Celery
-from dotenv import load_dotenv
 from crypto.coingecko.coingecko_client import CoinGeckoClient
-
-load_dotenv()
 
 redis_host = os.getenv("REDIS_HOST")
 redis_port = os.getenv("REDIS_PORT")
@@ -37,6 +34,6 @@ def updateCurrencies():
 
         for crypto_currency in crypto_currencies:
             data = coingecko_client.get_coin_by_id(crypto_currency.coingecko_id)
-            service.updateCurrency(crypto_currency, data)
+            service.update_currency(crypto_currency, data)
     
     return "DONE"

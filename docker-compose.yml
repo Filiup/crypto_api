@@ -42,6 +42,7 @@ services:
         condition: service_healthy
     env_file:
       - .env
+      - .env.secret
     volumes:
       - ./src:/home/python/celery-worker
     working_dir: /home/python/celery-worker
@@ -62,6 +63,7 @@ services:
         condition: service_healthy
     env_file:
       - .env
+      - .env.secret
     volumes:
       - ./src:/home/python/celery-worker
     working_dir: /home/python/celery-worker

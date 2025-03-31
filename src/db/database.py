@@ -15,6 +15,6 @@ class Database:
         self.session = self.get_new_session()
         return self.session
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_value, traceback):
         if self.session:
             self.session.close()
