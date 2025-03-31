@@ -1,4 +1,3 @@
-from typing import List
 from datetime import datetime
 from crypto.coingecko.coingecko_client import CoinGeckoClient
 from crypto.coingecko.types import CoinDataResponse
