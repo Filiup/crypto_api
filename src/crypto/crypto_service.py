@@ -24,7 +24,7 @@ class CryptoService:
 
         return coin.get("id")
 
-    def get_currencies(self, dto: CryptoQueryDto) -> List[CryptoCurrencyModel]:
+    def get_currencies(self, dto: CryptoQueryDto):
         stmt = select(CryptoCurrencyModel)
 
         if dto.category is not None:
@@ -39,7 +39,7 @@ class CryptoService:
         if dto.symbol is not None:
             stmt = stmt.where(CryptoCurrencyModel.symbol == dto.symbol)
 
-        return self.repository.get_by(stmt)
+        return self.repository.get_many_by(stmt)
     
     def get_currency(self, id: int):
         crypto_currency = self.repository.get_one(id)

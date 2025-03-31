@@ -1,7 +1,5 @@
 import sqlalchemy as sa
-from sqlalchemy.orm import sessionmaker, declarative_base
-
-Base = declarative_base()
+from sqlalchemy.orm import sessionmaker
 
 class Database:
     def __init__(self, url: str, echo: bool):

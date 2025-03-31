@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 import datetime
-from db.database import Base
+from db.base_model import Base
 from sqlalchemy import String, DateTime, BigInteger, Index
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.sql import func
+from sqlalchemy.ext.hybrid import hybrid_property
 
 @dataclass
 class CryptoCurrencyModel(Base):
@@ -28,6 +29,10 @@ class CryptoCurrencyModel(Base):
     __table_args__ = (
         Index("idx_crypto_currency_categories_gin", categories, postgresql_using='gin'),
     )
+
+    @hybrid_property
+    def identifier(self):
+        return self.id
 
     def __repr__(self):
         return f"CryptoCurrencyEntity(id={self.id}, symbol={self.symbol}, coingecko_id={self.coingecko_id}, name={self.name})"
