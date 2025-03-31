@@ -18,8 +18,8 @@ class Repository(Generic[T]):
     def get_many(self) -> Sequence[T]:
         return self.session.query(self.model).all()
     
-    def get_one_by(self, stmt) -> T:
-        pass
+    def get_one_by(self, stmt) -> Optional[T]:
+        return self.session.scalars(stmt).first()
     
     def get_many_by(self, stmt) -> Sequence[T]:
         return self.session.scalars(stmt).all()

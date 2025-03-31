@@ -9,7 +9,7 @@ from crypto.dto.crypto_path import CryptoPathDto
 from crypto.dto.crypto_query import CryptoQueryDto
 from crypto.dto.crypto_response import CryptoResponseDto
 from crypto.dto.crypto_response_list import CryptoResponseListDto
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 
 from crypto.dto.put_crypto import PutCryptoDto
 
@@ -58,7 +58,7 @@ class CryptoApiView:
         400: ErrorResponseDto
     })
     def get(self, path: CryptoPathDto):
-        crypto_currency = self.crypto_service.get_currency(path.id)
+        crypto_currency = self.crypto_service.get_currency_by_id(path.id)
         if crypto_currency is None:
             raise NotFound(f"Coin with id {path.id} was not found")
 
@@ -71,7 +71,7 @@ class CryptoApiView:
         400: ErrorResponseDto
     })
     def delete(self, path: CryptoPathDto):
-        crypto_currency = self.crypto_service.get_currency(path.id)
+        crypto_currency = self.crypto_service.get_currency_by_id(path.id)
         if crypto_currency is None:
             raise NotFound(f"Coin with id {path.id} was not found")
 
@@ -86,9 +86,14 @@ class CryptoApiView:
         400: ErrorResponseDto
     })
     def put(self, path: CryptoPathDto, body: PutCryptoDto):
-        crypto_currency = self.crypto_service.get_currency(path.id)
+        same_crypto_currency = self.crypto_service.get_currency_by(body.name, body.symbol)
+        if same_crypto_currency:
+            raise BadRequest(f"Crypto currency with name {body.name} and symbol {body.symbol} is already present")
+
+        crypto_currency = self.crypto_service.get_currency_by_id(path.id)
         if crypto_currency is None:
             raise NotFound(f"Coin with id {path.id} was not found")
+        
 
         updated_currency = self.crypto_service.update_existing_currency(crypto_currency, body)
         response_dto = CryptoResponseDto.from_model(updated_currency)

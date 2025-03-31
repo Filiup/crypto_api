@@ -43,9 +43,18 @@ class CryptoService:
         
         return self.repository.get_many_by(stmt)
     
-    def get_currency(self, id: int):
+    def get_currency_by_id(self, id: int):
         crypto_currency = self.repository.get_one(id)
         return crypto_currency
+    
+    def get_currency_by(self, name: str, symbol: str):
+        stmt = select(CryptoCurrencyModel).where(
+            (CryptoCurrencyModel.name == name) &
+            (CryptoCurrencyModel.symbol == symbol)
+        )
+
+        return self.repository.get_one_by(stmt)
+
     
     def delete_currency(self, model: CryptoCurrencyModel):
         deleted_currency = self.repository.delete_one(model)
