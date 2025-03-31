@@ -33,7 +33,7 @@ services:
       - .env
     environment:
       - FLASK_RUN_PORT=${CRYPTO_API_PORT}
-      - FLASK_APP=app
+      - FLASK_APP=src/app
     volumes:
       - .:/home/python/crypto-api
     working_dir: /home/python/crypto-api
