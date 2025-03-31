@@ -8,7 +8,7 @@ from crypto.crypto_view import *
 from werkzeug.exceptions import HTTPException
 
 def handle_http_error(error: HTTPException):
-    print(f"HTTP error: {error.name}")
+    logging.error(f"HTTP error: {error.name}")
 
     response = error.get_response()
     error_dto = ErrorResponseDto(
