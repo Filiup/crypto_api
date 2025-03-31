@@ -10,7 +10,7 @@ class AppContainer(containers.DeclarativeContainer):
         echo=True if os.getenv("DATABASE_LOGGING") == "true" else False
     )
 
-    session = providers.Factory(
+    session = providers.ThreadLocalSingleton(
         lambda db: db.get_new_session(),
         db=database
     )
