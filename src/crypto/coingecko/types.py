@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from math import dist
+from os import name
 from typing import TypedDict
 
 
@@ -27,6 +29,9 @@ class CoingeckoCoinData(CoingeckoCoin):
 
 @dataclass
 class CoinDataResponse:
+    id: str
+    name: str
+    symbol:str
     hashing_algorithm: str
     categories: list[str]
     current_price: float
@@ -38,6 +43,9 @@ class CoinDataResponse:
     @classmethod
     def from_dict(cls, dict: CoingeckoCoinData):
         return cls(
+             id=dict['id'],
+             name=dict['name'],
+             symbol=dict['symbol'],
              hashing_algorithm=dict['hashing_algorithm'],
              categories=dict['categories'],
              current_price=dict['market_data']['current_price']['czk'],

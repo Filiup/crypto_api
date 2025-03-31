@@ -1,5 +1,6 @@
 import os
 from crypto.crypto_repository import CryptoRepository
+from crypto.crypto_service import CryptoService
 from db.database import Database
 from celery import Celery
 from dotenv import load_dotenv
@@ -18,21 +19,24 @@ app.conf.broker_connection_retry_on_startup = True
 
 coingecko_client = CoinGeckoClient(api_key=os.getenv("COINGECKO_API_KEY"), base_url=os.getenv("COINGECKO_BASE_URL"))
 
-
 @app.on_after_configure.connect
 def setup_periodic_tasks(
     sender: Celery,     
     **kwargs
 ):
-    sender.add_periodic_task(1.0, updateCurrencies.s(), name="Update crypto currencies")
+    beat_seconds = float(os.getenv("CELERY_BEAT_MINUTES", "5")) * 60
+    sender.add_periodic_task(beat_seconds, updateCurrencies.s(), name="Update crypto currencies")
 
 @app.task()
 def updateCurrencies():  
-    database = Database(url=os.getenv("DATABASE_URL"))
-    repository = CryptoRepository(session=database.get_session())
-    
-    crypto_currencies = repository.get_many()
+    with Database(url=os.getenv("DATABASE_URL", echo=False)) as session:
+        repository = CryptoRepository(session=session)
+        service = CryptoService(repository=repository, coingecko_client=coingecko_client)
 
-    print(crypto_currencies[0])
-    
+        crypto_currencies = repository.get_many()
 
+        for crypto_currency in crypto_currencies:
+            data = coingecko_client.get_coin_by_id(crypto_currency.coingecko_id)
+            service.updateCurrency(crypto_currency, data)
+    
+    return "DONE"

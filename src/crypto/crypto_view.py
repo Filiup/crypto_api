@@ -89,7 +89,7 @@ class CryptoApiView:
         if crypto_currency is None:
             raise NotFound(f"Coin with id {path.id} was not found")
 
-        updated_currency = self.crypto_service.updateCurrency(crypto_currency, body)
+        updated_currency = self.crypto_service.updateExistingCurrency(crypto_currency, body)
         response_dto = CryptoResponseDto.from_model(updated_currency)
 
         return make_response(response_dto.model_dump(), 200)
