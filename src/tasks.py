@@ -37,6 +37,6 @@ def updateCurrencies():
 
         for crypto_currency in crypto_currencies:
             data = coingecko_client.get_coin_by_id(crypto_currency.coingecko_id)
-            service.updateCurrency(crypto_currency, data)
+            service.update_currency(crypto_currency, data)
     
     return "DONE"

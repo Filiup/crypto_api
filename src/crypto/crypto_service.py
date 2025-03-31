@@ -22,19 +22,19 @@ class CryptoService:
         return coin.get("id")
 
 
-    def getAllCurrencies(self):
+    def get_all_Currencies(self):
         return self.repository.get_many()
     
-    def getCurrency(self, id: int):
+    def get_currency(self, id: int):
         crypto_currency = self.repository.get_one(id)
         return crypto_currency
     
-    def deleteCurrency(self, model: CryptoCurrencyModel):
+    def delete_currency(self, model: CryptoCurrencyModel):
         deleted_currency = self.repository.delete_one(model)
         return deleted_currency
 
 
-    def createCurrency(self, dto: CreateCryptoDto):
+    def create_currency(self, dto: CreateCryptoDto):
         coingecko_id = self._find_coingecko_id(dto.name, dto.symbol)
         if coingecko_id is None:
             raise CoingeckoException(f"Coin with name {dto.name} and symbol {dto.symbol} does not exist")
@@ -56,7 +56,7 @@ class CryptoService:
 
         return self.repository.create(crypto_currency_model)
     
-    def updateCurrency(self, model: CryptoCurrencyModel, coin_data: CoinDataResponse):
+    def update_currency(self, model: CryptoCurrencyModel, coin_data: CoinDataResponse):
         model.name = coin_data.name
         model.symbol = coin_data.symbol
         model.current_price=coin_data.current_price,
@@ -69,14 +69,14 @@ class CryptoService:
         
         self.repository.session.commit()
     
-    def updateExistingCurrency(self, model: CryptoCurrencyModel, dto: PutCryptoDto):
+    def update_existing_currency(self, model: CryptoCurrencyModel, dto: PutCryptoDto):
         coingecko_id = self._find_coingecko_id(dto.name, dto.symbol)
         if coingecko_id is None:
             raise CoingeckoException(f"Coin with name {dto.name} and symbol {dto.symbol} does not exist")
         
         coin_data = self.coingecko_client.get_coin_by_id(coingecko_id)
         
-        self.updateCurrency(model, coin_data)
+        self.update_currency(model, coin_data)
         self.repository.session.commit()
 
         return model

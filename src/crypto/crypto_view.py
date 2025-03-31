@@ -29,7 +29,7 @@ class CryptoListApiView:
         400: ErrorResponseDto
     })
     def get(self):
-        crypto_currencies = self.crypto_service.getAllCurrencies()
+        crypto_currencies = self.crypto_service.get_all_Currencies()
         response_dto = CryptoResponseDto.from_model_list(crypto_currencies)
         response_list_dto = CryptoResponseListDto(root=response_dto)
 
@@ -40,7 +40,7 @@ class CryptoListApiView:
         400: ErrorResponseDto
     })
     def post(self, body: CreateCryptoDto):
-        crypto_currency = self.crypto_service.createCurrency(body)
+        crypto_currency = self.crypto_service.create_currency(body)
         response_dto = CryptoResponseDto.from_model(crypto_currency)
 
         return make_response(response_dto.model_dump(), 200)
@@ -57,7 +57,7 @@ class CryptoApiView:
         400: ErrorResponseDto
     })
     def get(self, path: CryptoPathDto):
-        crypto_currency = self.crypto_service.getCurrency(path.id)
+        crypto_currency = self.crypto_service.get_currency(path.id)
         if crypto_currency is None:
             raise NotFound(f"Coin with id {path.id} was not found")
 
@@ -70,11 +70,11 @@ class CryptoApiView:
         400: ErrorResponseDto
     })
     def delete(self, path: CryptoPathDto):
-        crypto_currency = self.crypto_service.getCurrency(path.id)
+        crypto_currency = self.crypto_service.get_currency(path.id)
         if crypto_currency is None:
             raise NotFound(f"Coin with id {path.id} was not found")
 
-        deleted_currency = self.crypto_service.deleteCurrency(crypto_currency)
+        deleted_currency = self.crypto_service.delete_currency(crypto_currency)
         response_dto = CryptoResponseDto.from_model(deleted_currency)
 
         return make_response(response_dto.model_dump(), 200)
@@ -85,11 +85,11 @@ class CryptoApiView:
         400: ErrorResponseDto
     })
     def put(self, path: CryptoPathDto, body: PutCryptoDto):
-        crypto_currency = self.crypto_service.getCurrency(path.id)
+        crypto_currency = self.crypto_service.get_currency(path.id)
         if crypto_currency is None:
             raise NotFound(f"Coin with id {path.id} was not found")
 
-        updated_currency = self.crypto_service.updateExistingCurrency(crypto_currency, body)
+        updated_currency = self.crypto_service.update_existing_currency(crypto_currency, body)
         response_dto = CryptoResponseDto.from_model(updated_currency)
 
         return make_response(response_dto.model_dump(), 200)
