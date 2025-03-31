@@ -1,15 +1,11 @@
 from flask_openapi3 import OpenAPI, Info
 from app_container import AppContainer
-from dotenv import load_dotenv
 from flask import json, jsonify
 import logging
 
 from common.exceptions.service_exception import ServiceException
 from crypto.crypto_view import *
 from werkzeug.exceptions import HTTPException
-
-load_dotenv(".env")
-load_dotenv(".env.secret", override=True)
 
 def handle_http_error(error: HTTPException):
     print(f"HTTP error: {error.name}")

@@ -86,6 +86,7 @@ services:
       - ${CRYPTO_API_PORT}:${CRYPTO_API_PORT}
     env_file:
       - .env
+      - .env.secret
     environment:
       - FLASK_RUN_PORT=${CRYPTO_API_PORT}
       - FLASK_APP=src/app
