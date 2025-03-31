@@ -1,5 +1,5 @@
 from sqlalchemy.exc import IntegrityError
-from crypto.expecptions.database import DatabaseException
+from crypto.exceptions.database import DatabaseException
 from crypto.models.cryto_currency_model import CryptoCurrencyModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session

@@ -4,7 +4,7 @@ from crypto.coingecko.types import CoinDataResponse
 from crypto.crypto_repository import CryptoRepository
 from crypto.dto.create_crypto import CreateCryptoDto
 from crypto.dto.put_crypto import PutCryptoDto
-from crypto.expecptions.coingecko import CoingeckoException
+from crypto.exceptions.coingecko import CoingeckoException
 from crypto.models.cryto_currency_model import CryptoCurrencyModel
 
 class CryptoService:
