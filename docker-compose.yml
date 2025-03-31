@@ -18,6 +18,19 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
 
+  crypto-redis:
+    container_name: crypto-redis
+    image: redis:7-alpine
+    ports:
+      - 6370:${REDIS_PORT}
+    healthcheck:
+      test: redis-cli ping || exit 1
+      interval: 10s
+      timeout: 30s
+      start_period: 30s
+    env_file:
+      - .env
+
   crypto-api:
     container_name: crypto-api
     build:
