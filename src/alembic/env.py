@@ -9,7 +9,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from db.database import Base
+from db.base_model import Base
 from crypto.models.cryto_currency_model import *
 
 # this is the Alembic Config object, which provides

@@ -23,7 +23,7 @@ class CryptoCurrencyModel(Base):
     image_url: Mapped[str] = mapped_column(nullable=True)
 
     symbol: Mapped[str] = mapped_column(index=True)
-    hashing_algorithm: Mapped[str]
+    hashing_algorithm: Mapped[str] = mapped_column(index=True)
     name: Mapped[str] = mapped_column(index=True)
 
     __table_args__ = (

@@ -39,6 +39,9 @@ class CryptoService:
         if dto.symbol is not None:
             stmt = stmt.where(CryptoCurrencyModel.symbol == dto.symbol)
 
+        if dto.hashing_algorithm is not None:
+            stmt = stmt.where(CryptoCurrencyModel.hashing_algorithm == dto.hashing_algorithm)    
+        
         return self.repository.get_many_by(stmt)
     
     def get_currency(self, id: int):
