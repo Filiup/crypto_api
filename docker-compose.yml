@@ -31,6 +31,46 @@ services:
     env_file:
       - .env
 
+  celery-worker:
+    container_name: celery-worker
+    build:
+      context: .
+    depends_on:
+      crypto-redis:
+        condition: service_healthy
+      crypto-pg:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - ./src:/home/python/celery-worker
+    working_dir: /home/python/celery-worker
+    command:
+      - sh
+      - -c
+      - |
+        celery -A tasks worker --loglevel=debug
+
+  celery-beat:
+    container_name: celery-beat
+    build:
+      context: .
+    depends_on:
+      crypto-redis:
+        condition: service_healthy
+      crypto-pg:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - ./src:/home/python/celery-worker
+    working_dir: /home/python/celery-worker
+    command:
+      - sh
+      - -c
+      - |
+        celery -A tasks beat -s /tmp/celerybeat-schedule --loglevel=debug
+
   crypto-api:
     container_name: crypto-api
     build:
