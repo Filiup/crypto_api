@@ -1,11 +1,14 @@
+from typing import List
 from datetime import datetime
 from crypto.coingecko.coingecko_client import CoinGeckoClient
 from crypto.coingecko.types import CoinDataResponse
 from crypto.crypto_repository import CryptoRepository
 from crypto.dto.create_crypto import CreateCryptoDto
+from crypto.dto.crypto_query import CryptoQueryDto
 from crypto.dto.put_crypto import PutCryptoDto
 from crypto.exceptions.coingecko import CoingeckoException
 from crypto.models.cryto_currency_model import CryptoCurrencyModel
+from sqlalchemy import select
 
 class CryptoService:
     def __init__(self, repository: CryptoRepository, coingecko_client: CoinGeckoClient):
@@ -21,9 +24,22 @@ class CryptoService:
 
         return coin.get("id")
 
+    def get_currencies(self, dto: CryptoQueryDto) -> List[CryptoCurrencyModel]:
+        stmt = select(CryptoCurrencyModel)
 
-    def get_all_Currencies(self):
-        return self.repository.get_many()
+        if dto.category is not None:
+            stmt = stmt.where(CryptoCurrencyModel.categories.any(dto.category))
+
+        if dto.coingecko_id is not None:
+            stmt = stmt.where(CryptoCurrencyModel.coingecko_id == dto.coingecko_id)
+
+        if dto.name is not None:
+            stmt = stmt.where(CryptoCurrencyModel.name == dto.name)
+
+        if dto.symbol is not None:
+            stmt = stmt.where(CryptoCurrencyModel.symbol == dto.symbol)
+
+        return self.repository.get_by(stmt)
     
     def get_currency(self, id: int):
         crypto_currency = self.repository.get_one(id)

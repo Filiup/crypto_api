@@ -6,6 +6,7 @@ from common.dto.error_response import ErrorResponseDto
 from crypto.crypto_service import CryptoService
 from crypto.dto.create_crypto import CreateCryptoDto
 from crypto.dto.crypto_path import CryptoPathDto
+from crypto.dto.crypto_query import CryptoQueryDto
 from crypto.dto.crypto_response import CryptoResponseDto
 from crypto.dto.crypto_response_list import CryptoResponseListDto
 from werkzeug.exceptions import NotFound
@@ -28,8 +29,8 @@ class CryptoListApiView:
         200: CryptoResponseListDto,
         400: ErrorResponseDto
     })
-    def get(self):
-        crypto_currencies = self.crypto_service.get_all_Currencies()
+    def get(self, query: CryptoQueryDto):
+        crypto_currencies = self.crypto_service.get_currencies(query)
         response_dto = CryptoResponseDto.from_model_list(crypto_currencies)
         response_list_dto = CryptoResponseListDto(root=response_dto)
 

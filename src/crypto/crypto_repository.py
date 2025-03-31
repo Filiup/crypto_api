@@ -21,6 +21,9 @@ class CryptoRepository:
     def get_many(self):
         return self.session.query(CryptoCurrencyModel).all()
     
+    def get_by(self, stmt):
+        return self.session.scalars(stmt).all()
+    
     def get_one(self, id: int):
         return self.session.query(CryptoCurrencyModel).where(CryptoCurrencyModel.id == id).first()
     
