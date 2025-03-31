@@ -29,7 +29,7 @@ def setup_periodic_tasks(
 
 @app.task()
 def updateCurrencies():  
-    with Database(url=os.getenv("DATABASE_URL", echo=False)) as session:
+    with  Database(url=os.getenv("DATABASE_URL"), echo=False) as session:
         repository = CryptoRepository(session=session)
         service = CryptoService(repository=repository, coingecko_client=coingecko_client)
 
@@ -37,6 +37,6 @@ def updateCurrencies():
 
         for crypto_currency in crypto_currencies:
             data = coingecko_client.get_coin_by_id(crypto_currency.coingecko_id)
-            service.update_currency(crypto_currency, data)
+            service.updateCurrency(crypto_currency, data)
     
     return "DONE"

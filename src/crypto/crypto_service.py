@@ -66,6 +66,7 @@ class CryptoService:
         model.image_url=coin_data.image_url,
         model.hashing_algorithm = coin_data.hashing_algorithm
         model.categories = coin_data.categories
+        model.coingecko_id = coin_data.id
         
         self.repository.session.commit()
     

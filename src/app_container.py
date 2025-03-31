@@ -7,11 +7,11 @@ class AppContainer(containers.DeclarativeContainer):
     database = providers.Singleton(
         Database,
         url=os.getenv("DATABASE_URL"),
-        echo=True if os.os.getenv("DATABASE_LOGGING") == "true" else False
+        echo=True if os.getenv("DATABASE_LOGGING") == "true" else False
     )
 
     session = providers.Factory(
-        lambda db: db.get_session(),
+        lambda db: db.get_new_session(),
         db=database
     )
 
