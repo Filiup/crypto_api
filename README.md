@@ -8,6 +8,7 @@
 - **Database Migrations with Alembic**: Uses [Alembic](https://alembic.sqlalchemy.org/en/latest/) for version-controlled database schema migrations.
 - **Dependency Management with Dependency Injector**: Utilizes [Dependency Injector](https://github.com/ets-labs/python-dependency-injector) for structured and maintainable dependency management.
 - **Automated Cryptocurrency Price Updates**: Uses [Celery](https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html) workers to periodically fetch and update cryptocurrency prices.
+- **Data Validation with Pydantic**: Utilizes [Pydantic](https://docs.pydantic.dev/latest/) for strict and efficient validation of HTTP request data, ensuring type safety and preventing malformed input.
 
 # Project usage
 
