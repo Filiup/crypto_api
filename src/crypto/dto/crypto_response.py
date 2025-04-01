@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, Field
 from crypto.models.cryto_currency_model import CryptoCurrencyModel
 
@@ -13,7 +14,7 @@ class CryptoResponseDto(BaseModel):
     image_url: str = Field("", description="Crypto currency logo URL")
 
     symbol: str = Field("BTC",  description="Crypto currency symbol")
-    hashing_algorithm: str = Field(None, description="Crypto currency hashing algorithm")
+    hashing_algorithm: Optional[str] = Field(None, description="Crypto currency hashing algorithm")
     name: str = Field("Bitcoin", description="Crypto currency name")
 
 
