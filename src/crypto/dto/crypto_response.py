@@ -13,7 +13,7 @@ class CryptoResponseDto(BaseModel):
     image_url: str = Field("", description="Crypto currency logo URL")
 
     symbol: str = Field("BTC",  description="Crypto currency symbol")
-    hashing_algorithm: str = Field("SHA256", description="Crypto currency hashing algorithm")
+    hashing_algorithm: str = Field(None, description="Crypto currency hashing algorithm")
     name: str = Field("Bitcoin", description="Crypto currency name")
 
 
