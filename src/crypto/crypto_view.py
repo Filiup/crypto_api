@@ -55,7 +55,7 @@ class CryptoApiView:
 
     @crypto_view.doc(summary="Get crypto currency by id", responses={
         200: CryptoResponseDto,
-        400: ErrorResponseDto
+        404: ErrorResponseDto
     })
     def get(self, path: CryptoPathDto):
         crypto_currency = self.crypto_service.get_currency_by_id(path.id)
@@ -68,7 +68,7 @@ class CryptoApiView:
 
     @crypto_view.doc(summary="Delete crypto currency by id", responses={
         200: CryptoResponseDto,
-        400: ErrorResponseDto
+        404: ErrorResponseDto
     })
     def delete(self, path: CryptoPathDto):
         crypto_currency = self.crypto_service.get_currency_by_id(path.id)
